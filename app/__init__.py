@@ -32,7 +32,7 @@ app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 jwt = JWTManager(app)
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/bookshelf"
+app.config["MONGO_URI"] = "mongodb+srv://adityapangestu:adityapangestu@cluster0.1juvq.mongodb.net/books_db?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 # bycrypt
 bcrypt = Bcrypt(app)
