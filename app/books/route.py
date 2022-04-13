@@ -1,3 +1,4 @@
+from unittest import result
 from app import app, mongo, jsonify, request
 from flask_jwt_extended import jwt_required
 from pymongo.errors import BulkWriteError
@@ -16,12 +17,15 @@ def index_books():
 # @jwt_required()
 def create_book():
     code = request.json['code']
+    duplikat = mongo.db.books.find_one({"code":code})
+    if duplikat:
+        return {'new_book':False,'message':'Book code has been used'},400
     title = request.json['title']
     author = request.json['author']
     stock = request.json['stock']
     data = {'code': code, 'title': title, 'author': author, 'stock': stock}
-    new_books = mongo.db.books.insert_one(data)
-    return jsonify({"new_book": True})
+    result = mongo.db.books.insert_one(data)
+    return jsonify({"result": result.acknowledged})
 
 
 @app.route('/book', methods=['PUT'])
@@ -34,12 +38,12 @@ def update_book():
     data = {'title': title, 'author': author, 'stock': stock}
     result = mongo.db.books.update_one(
         {'code': code}, {"$set": data})
-    return result.raw_result
+    return {'result':result.acknowledged,'matched_count':result.matched_count,'modified_count':result.modified_count}
 
 
 @app.route('/book', methods=['DELETE'])
 # @jwt_required()
 def delete_book():
     code = request.json['code']
-    book = mongo.db.books.delete_one({'code': code})
-    return book.raw_result
+    result = mongo.db.books.delete_one({'code': code})
+    return {'result':result.acknowledged,'delete_count':result.deleted_count}
