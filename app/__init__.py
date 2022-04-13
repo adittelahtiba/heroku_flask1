@@ -19,7 +19,7 @@ from flask_cors import CORS
 from kafka import KafkaConsumer, KafkaProducer
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://adityapangestu:adityapangestu@cluster0.1juvq.mongodb.net/myBooks"
+app.config["MONGO_URI"] = "mongodb+srv://adityapangestu:adityapangestu@cluster0.1juvq.mongodb.net/myBooks_redhat"
 mongo = PyMongo(app)
 # bycrypt
 bcrypt = Bcrypt(app)
